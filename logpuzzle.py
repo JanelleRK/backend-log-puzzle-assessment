@@ -28,10 +28,36 @@ def read_urls(filename):
     extracting the hostname from the filename itself.
     Screens out duplicate urls and returns the urls sorted into
     increasing order."""
-    # +++your code here+++
-    pass
 
+    url_list = []
+    #get a list of puzzle urls
+    url_list = get_url_list(filename)
+    #extract hostname from filename
+    hostname = extract_hostname_from_filename(filename
+    #screen out duplicate urls
+    #sort urls in increasing order
+    return url_list
 
+def get_url_list(filename):
+    """ Return the list of urls that have the word puzzle in them """
+    puzzle_url_list = []
+    with open(filename, 'r') as url_file:
+        for line in url_file:
+            match_url = re.search('puzzle', line)
+            if match_url:
+                extracted_url = extract_url_from_log_entry(line)
+                puzzle_url_list.append(extracted_url)
+    return puzzle_url_list
+
+def extract_url_from_log_entry(line):
+    extracted_url = re.findall('GET (\\S*) HTTP', line)
+    return extracted_url[0]
+
+def extract_hostname_from_filename(filename):
+    hostname = re.findall('_(\\S*)', filename)
+    print(hostname)
+    return hostname
+    
 def download_images(img_urls, dest_dir):
     """Given the urls already in the correct order, downloads
     each image into the given directory.
