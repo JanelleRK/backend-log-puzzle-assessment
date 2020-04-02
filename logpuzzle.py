@@ -30,16 +30,17 @@ def read_urls(filename):
     increasing order."""
 
     url_list = []
-    #get a list of puzzle urls
+    # get a list of puzzle urls
     url_list = get_url_list(filename)
-    #extract hostname from filename
-    hostname = extract_hostname_from_filename(filename
-    #combine hostname and url in url_list
-    url_list = [hostname]
-    # #screen out duplicate urls
-
+    # extract hostname from filename
+    hostname = extract_hostname_from_filename(filename)
+    # combine hostname and url in url_list
+    combined_url_list = combine_hostname_and_filename(hostname, url_list)
+    # screen out duplicate urls
+    combined_url_list = list(set(combined_url_list))
     #sort urls in increasing order
-    return url_list
+    sorted_url_list = sort_url_list(combined_url_list)
+    return sorted_url_list
 
 def get_url_list(filename):
     """ Return the list of urls that have the word puzzle in them """
@@ -59,7 +60,27 @@ def extract_url_from_log_entry(line):
 def extract_hostname_from_filename(filename):
     hostname = re.findall('_(\\S*)', filename)
     return hostname[0]
-    
+
+def combine_hostname_and_filename(hostname, url_list):
+    combined_url_list = []
+    for path in url_list:
+        combined_url_list.append(hostname + path)
+    return combined_url_list
+
+def sort_url_list(combined_url_list):
+    sorted_url_list = []
+    re.compile('-(....)[.jpg]')
+
+    return sorted_url_list
+
+    ###############################
+    #
+    #
+    """ Working on sorting comibned url list"""
+    #
+    #
+    ###############################
+
 def download_images(img_urls, dest_dir):
     """Given the urls already in the correct order, downloads
     each image into the given directory.
