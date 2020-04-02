@@ -34,7 +34,10 @@ def read_urls(filename):
     url_list = get_url_list(filename)
     #extract hostname from filename
     hostname = extract_hostname_from_filename(filename
-    #screen out duplicate urls
+    #combine hostname and url in url_list
+    url_list = [hostname]
+    # #screen out duplicate urls
+
     #sort urls in increasing order
     return url_list
 
@@ -55,8 +58,7 @@ def extract_url_from_log_entry(line):
 
 def extract_hostname_from_filename(filename):
     hostname = re.findall('_(\\S*)', filename)
-    print(hostname)
-    return hostname
+    return hostname[0]
     
 def download_images(img_urls, dest_dir):
     """Given the urls already in the correct order, downloads
