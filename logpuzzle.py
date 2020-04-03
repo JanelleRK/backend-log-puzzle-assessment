@@ -77,18 +77,14 @@ def combine_hostname_and_filename(hostname, url_list):
 
 
 def sort_url_list(combined_url_list):
-    #sorts our combined_url_list by last four of 
+    #find and sort all filenames between -8 and -4 indexes
     combined_url_list.sort( key = lambda combined_url_list: combined_url_list[-8:-4])
-
-        #find all filenames between -8 and -4 indexes
-        #sort the filenames
-    
     return combined_url_list
 
     ###############################
     #
     #
-    # Working on sorting comibned url list
+    # Working on downloading images
     #
     #
     ###############################
