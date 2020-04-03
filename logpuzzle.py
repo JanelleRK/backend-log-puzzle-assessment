@@ -58,15 +58,18 @@ def get_url_list(filename):
 
 
 def extract_url_from_log_entry(line):
+    #finds each line that contains "puzzle"
     extracted_url = re.findall('GET (\\S*) HTTP', line)
     return extracted_url[0]
 
 def extract_hostname_from_filename(filename):
+    #extracts the hostname from each file
     hostname = re.findall('_(\\S*)', filename)
     return hostname[0]
 
 
 def combine_hostname_and_filename(hostname, url_list):
+    #concatenates the hostname and filename
     combined_url_list = []
     for path in url_list:
         combined_url_list.append(hostname + path)
@@ -74,10 +77,13 @@ def combine_hostname_and_filename(hostname, url_list):
 
 
 def sort_url_list(combined_url_list):
-    sorted_url_list = []
-    re.compile('-(....)[.jpg]')
+    #sorts our combined_url_list by last four of 
+    combined_url_list.sort( key = lambda combined_url_list: combined_url_list[-8:-4])
 
-    return sorted_url_list
+        #find all filenames between -8 and -4 indexes
+        #sort the filenames
+    
+    return combined_url_list
 
     ###############################
     #
