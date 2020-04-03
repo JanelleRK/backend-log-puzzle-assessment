@@ -17,7 +17,7 @@ HTTP/1.0" 302 528 "-" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US;
 rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"
 
 """
-__author__ = "Janelle Kuhns with lots of googling"
+__author__ = "Janelle Kuhns with help from Janell Hyuck and stackoverflow: https://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside"
 
 import os
 import re
@@ -72,7 +72,7 @@ def combine_hostname_and_filename(hostname, url_list):
     #concatenates the hostname and filename
     combined_url_list = []
     for path in url_list:
-        combined_url_list.append(hostname + path)
+        combined_url_list.append("http://" + hostname + path)
     return combined_url_list
 
 
@@ -81,13 +81,6 @@ def sort_url_list(combined_url_list):
     combined_url_list.sort( key = lambda combined_url_list: combined_url_list[-8:-4])
     return combined_url_list
 
-    ###############################
-    #
-    #
-    # Working on downloading images
-    #
-    #
-    ###############################
 
 def download_images(img_urls, dest_dir):
     """Given the urls already in the correct order, downloads
@@ -97,8 +90,67 @@ def download_images(img_urls, dest_dir):
     with an img tag to show each local image file.
     Creates the directory if necessary.
     """
-    pass
+    # check for dir and if not, make one
+    check_for_directory_or_make_one(dest_dir)
 
+    # download images into a directory
+    # give images local filenames ie., img0, img1, etc
+    download_images_to_directory(img_urls, dest_dir)
+
+    # create an index.html file in the directory with img tag to show each image file
+    create_html_file(img_urls, dest_dir)
+
+
+def check_for_directory_or_make_one(dest_dir):
+    if os.path.isdir(dest_dir):
+        return
+    else:
+        os.mkdir(dest_dir)
+        return
+
+def download_images_to_directory(img_urls, dest_dir):
+    counter = 0
+    for img_url in img_urls:
+        #"./testdir/img0.jpg" - What I want end result to look like
+        #"./ + destdir + img + counter"
+        path_to_img_url = "./" + dest_dir + "/img" + str(counter) + ".jpg"
+        urllib.urlretrieve(img_url, path_to_img_url)
+        counter += 1
+
+def create_html_file(img_urls, dest_dir):
+    for (root, dirs, files) in os.walk(dest_dir):
+        #call function to sort these files
+        sorted_files = sort_these_files([file for file in files])
+        index_html_string = build_index_html_string(sorted_files)
+        return(sorted_files)
+        
+    #with open(dest_dir + "/index.html", 'w') as index_html:
+
+
+def build_index_html_string(sorted_files):
+    index_html_string = "<html> <body>  "
+    for sorted_file in sorted_files:
+        "<img src =" + dest_dir + sorted_file + "/>"
+
+def sort_numbers_in_files(file_string):
+    return int(file_string) if file_string.isdigit() else file_string
+
+
+def sorted_numbers_key(file_list):
+    '''
+    alist.sort(key=natural_keys) sorts in human order
+    http://nedbatchelder.com/blog/200712/human_sorting.html
+    (See Toothy's implementation in the comments)
+    '''
+    return [ sort_numbers_in_files(c) for c in re.split(r'(\d+)', file_list) ]
+
+
+
+def sort_these_files(file_list):
+    file_list.sort(key = sorted_numbers_key)
+    #sort_files = re.findall('img(\\d*)[.jpg]', [file for file in file_list])
+    return file_list
+    
 
 def create_parser():
     """Create an argument parser object"""
