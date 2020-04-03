@@ -12,9 +12,12 @@ http://code.google.com/edu/languages/google-python-class/
 Given an apache logfile, find the puzzle urls and download the images.
 
 Here's what a puzzle url looks like:
-10.254.254.28 - - [06/Aug/2007:00:13:48 -0700] "GET /~foo/puzzle-bar-aaab.jpg HTTP/1.0" 302 528 "-" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"
+10.254.254.28 - - [06/Aug/2007:00:13:48 -0700] "GET /~foo/puzzle-bar-aaab.jpg
+HTTP/1.0" 302 528 "-" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US;
+rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"
 
 """
+__author__ = "Janelle Kuhns with lots of googling"
 
 import os
 import re
@@ -53,6 +56,7 @@ def get_url_list(filename):
                 puzzle_url_list.append(extracted_url)
     return puzzle_url_list
 
+
 def extract_url_from_log_entry(line):
     extracted_url = re.findall('GET (\\S*) HTTP', line)
     return extracted_url[0]
@@ -61,11 +65,13 @@ def extract_hostname_from_filename(filename):
     hostname = re.findall('_(\\S*)', filename)
     return hostname[0]
 
+
 def combine_hostname_and_filename(hostname, url_list):
     combined_url_list = []
     for path in url_list:
         combined_url_list.append(hostname + path)
     return combined_url_list
+
 
 def sort_url_list(combined_url_list):
     sorted_url_list = []
@@ -76,7 +82,7 @@ def sort_url_list(combined_url_list):
     ###############################
     #
     #
-    """ Working on sorting comibned url list"""
+    # Working on sorting comibned url list
     #
     #
     ###############################
@@ -89,14 +95,14 @@ def download_images(img_urls, dest_dir):
     with an img tag to show each local image file.
     Creates the directory if necessary.
     """
-    # +++your code here+++
     pass
 
 
 def create_parser():
     """Create an argument parser object"""
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--todir',  help='destination directory for downloaded images')
+    parser.add_argument('-d', '--todir',
+                        help='destination direction for downloaded images')
     parser.add_argument('logfile', help='apache logfile to extract urls from')
 
     return parser
