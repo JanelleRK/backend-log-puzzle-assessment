@@ -95,7 +95,7 @@ def download_images(img_urls, dest_dir):
 
     # download images into a directory
     # give images local filenames ie., img0, img1, etc
-    download_images_to_directory(img_urls, dest_dir)
+    download_images_to_directory(img_urls, dest_dir) 
 
     # create an index.html file in the directory with img tag to show each image file
     create_html_file(img_urls, dest_dir)
@@ -116,7 +116,7 @@ def download_images_to_directory(img_urls, dest_dir):
         path_to_img_url = "./" + dest_dir + "/img" + str(counter) + ".jpg"
         urllib.urlretrieve(img_url, path_to_img_url)
         counter += 1
-    print("Image is downloading")
+        print("Image is downloading: " + img_url)
 
 def create_html_file(img_urls, dest_dir):
     for root, dirs, files in os.walk(dest_dir):
@@ -180,4 +180,3 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-    
