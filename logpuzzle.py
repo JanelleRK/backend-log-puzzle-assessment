@@ -50,7 +50,7 @@ def get_url_list(filename):
     puzzle_url_list = []
     with open(filename, 'r') as url_file:
         for line in url_file:
-            match_url = re.search('puzzle', line)
+            match_url = re.search('/puzzle/', line)
             if match_url:
                 extracted_url = extract_url_from_log_entry(line)
                 puzzle_url_list.append(extracted_url)
@@ -111,26 +111,24 @@ def check_for_directory_or_make_one(dest_dir):
 def download_images_to_directory(img_urls, dest_dir):
     counter = 0
     for img_url in img_urls:
-        #"./testdir/img0.jpg" - What I want end result to look like
+        #"./destdir/img0.jpg" - What I want end result to look like
         #"./ + destdir + img + counter"
         path_to_img_url = "./" + dest_dir + "/img" + str(counter) + ".jpg"
         urllib.urlretrieve(img_url, path_to_img_url)
         counter += 1
+    print("Image is downloading")
 
 def create_html_file(img_urls, dest_dir):
-    for (root, dirs, files) in os.walk(dest_dir):
-        #call function to sort these files
-        sorted_files = sort_these_files([file for file in files])
-        index_html_string = build_index_html_string(sorted_files)
-        return(sorted_files)
+    for root, dirs, files in os.walk(dest_dir):
+        image_tags = []
+        for image_file in img_urls:
+            image_tags.append('<img src="{0}">'.format(image_file))
         
-    #with open(dest_dir + "/index.html", 'w') as index_html:
+    with open(dest_dir + "/index.html", 'w') as index_html:
+        index_html.write("<html><body>{0}</body></html>".format(''.join(image_tags)))
 
 
-def build_index_html_string(sorted_files):
-    index_html_string = "<html> <body>  "
-    for sorted_file in sorted_files:
-        "<img src =" + dest_dir + sorted_file + "/>"
+
 
 def sort_numbers_in_files(file_string):
     return int(file_string) if file_string.isdigit() else file_string
@@ -182,3 +180,4 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
+    
